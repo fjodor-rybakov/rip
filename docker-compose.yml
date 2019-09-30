@@ -1,0 +1,19 @@
+version: '3.4'
+
+services:
+  rip_database_pg:
+    container_name: ${CONTAINER_NAME_DB:-rip_database_pg}
+    image: postgres
+    restart: always
+    ports:
+      - ${EXTERNAL_PORT:-5003}:${DOCKER_PORT:-5432}
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB:-rip_db}
+      - POSTGRES_USER=${POSTGRES_USER:-rip_user}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-dsfb32fuuis}
+    networks:
+      - rip-network
+
+networks:
+  rip-network:
+    external: true
