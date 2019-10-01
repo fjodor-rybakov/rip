@@ -20,7 +20,12 @@
       "launchBrowser": true,
       "applicationUrl": "https://localhost:5001;http://localhost:5000",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DB_CONNECTOR_STRING": "Host=localhost;Port=5003;Database=rip_db;Username=rip_user;Password=dsfb32fuuis",
+        "AUTH_KEY": "@e38hr@!r%$^%@^$7324f2&%$%$&&*@sd",
+        "AUTH_AUDIENCE": "http://localhost:5001",
+        "AUTH_ISSUER": "MyAuthServer",
+        "AUTH_LIFETIME": "60"
       }
     }
   }

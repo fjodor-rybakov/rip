@@ -11,6 +11,12 @@ services:
     restart: always
     ports:
       - ${EXTERNAL_PORT:-5001}:${DOCKER_PORT:-80}
+    environment:
+      - DB_CONNECTOR_STRING=${DB_CONNECTOR_STRING:-Host=rip_database_pg;Port=5432;Database=rip_db;Username=rip_user;Password=dsfb32fuuis}
+      - AUTH_KEY=${AUTH_KEY:-dsfgw6234234ferf}
+      - AUTH_AUDIENCE=${AUTH_AUDIENCE:-http://localhost:5001}
+      - AUTH_ISSUER=${AUTH_ISSUER:-MyAuthServer}
+      - AUTH_LIFETIME=${AUTH_LIFETIME:-60}
     networks:
       - rip-network
 
