@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace backend.middleware
 {
-    public class AppHandlerExceptionMiddleware
+    public static class AppHandlerExceptionMiddleware
     {
         public static void AppHandlerException(IApplicationBuilder errorApp, ApiErrors apiErrors)
         {

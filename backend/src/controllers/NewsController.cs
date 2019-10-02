@@ -1,6 +1,4 @@
-﻿using System;
-using backend.core.connectors;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace backend.controllers
 {

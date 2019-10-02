@@ -1,3 +1,5 @@
 .idea
 backend/.idea
 backend/bin
+frontend/.idea
+frontend/node_modules
