@@ -17,6 +17,7 @@ services:
       - AUTH_AUDIENCE=${AUTH_AUDIENCE:-http://localhost:5001}
       - AUTH_ISSUER=${AUTH_ISSUER:-MyAuthServer}
       - AUTH_LIFETIME=${AUTH_LIFETIME:-60}
+      - FRONTEND_ADDRESS=${FRONTEND_ADDRESS:-http://localhost:5000}
     networks:
       - rip-network
 
