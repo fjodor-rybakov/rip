@@ -9,6 +9,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using backend.core.configs;
 using backend.helper;
+using backend.models.entities;
 
 namespace backend.services
 {
@@ -24,14 +25,14 @@ namespace backend.services
             _authConfig = authConfig;
             _apiErrors = apiErrors;
         }
-        
+
         public string Login(LoginUserDto loginUserDto)
         {
             var identity = GetIdentity(loginUserDto);
-            return identity == null ? null : GetToken(identity);
+            return identity == null ? throw _apiErrors.UserNotFount : GetToken(identity);
         }
 
-        /*public string Registration(CreateUserDto createUserDto)
+        public string Registration(CreateUserDto createUserDto)
         {
             var user = _db.Users.Select(userEntity =>
                 userEntity.Email == createUserDto.Email || userEntity.Nickname == createUserDto.Nickname).ToList();
@@ -39,9 +40,14 @@ namespace backend.services
             {
                 throw _apiErrors.UserAlreadyExist;
             }
-            
-            _db
-        }*/
+
+            var newUserEntity = new UserEntity()
+            {
+                Email = createUserDto.Email, Nickname = createUserDto.Nickname, Password = createUserDto.Password
+            };
+            _db.Users.Add(newUserEntity);
+            return "Пользователь был зарегистрирован";
+        }
 
         private string GetToken(ClaimsIdentity identity)
         {

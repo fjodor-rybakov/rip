@@ -4,6 +4,7 @@ using backend.controllers;
 using backend.core.configs;
 using backend.core.connectors;
 using backend.helper;
+using backend.middleware;
 using backend.services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -13,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 
@@ -69,6 +71,8 @@ namespace backend
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseExceptionHandler(errorApp => AppHandlerExceptionMiddleware.AppHandlerException(errorApp, _apiErrors));
 
             app.UseRouting();
             app.UseEndpoints(endpoints =>

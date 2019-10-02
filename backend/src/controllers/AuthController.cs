@@ -1,5 +1,4 @@
-﻿using System;
-using backend.helper;
+﻿using backend.helper;
 using backend.models.dto.user;
 using backend.services;
 using Microsoft.AspNetCore.Mvc;
@@ -22,24 +21,15 @@ namespace backend.controllers
         [HttpPost("login")]
         public ActionResult Login([FromBody] LoginUserDto loginUserDto)
         {
-            try
-            {
-                var token = _authService.Login(loginUserDto);
-                return token == null ? throw _apiErrors.UserNotFount : new OkObjectResult(new {Token = token});
-            }
-            catch (Error error)
-            {
-                if (error.GetType().GetProperty("HttpStatus") != null)
-                    return StatusCode(error.HttpStatus, error.Message);
-                Console.WriteLine(error);
-                return StatusCode(_apiErrors.ServerError.HttpStatus, _apiErrors.ServerError.Message);
-            }
+            var token = _authService.Login(loginUserDto);
+            return new OkObjectResult(new {Token = token});
         }
 
-        /*[HttpPost("registration")]
+        [HttpPost("registration")]
         public ActionResult Registration([FromBody] CreateUserDto createUserDto)
         {
-            
-        }*/
+            var registrationResult = _authService.Registration(createUserDto);
+            return new OkObjectResult(new {Message = registrationResult});
+        }
     }
 }

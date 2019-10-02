@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Net;
-using Microsoft.AspNetCore.Mvc;
 
 namespace backend.helper
 {
     public class Error : Exception
     {
         public int HttpStatus;
-        public string Message;
+        public new string Message;
     }
 
     public class ApiErrors
