@@ -9,6 +9,8 @@ namespace backend.core.connectors
     {
         public DbSet<UserEntity> Users { get; set; }
         public DbSet<RoleEntity> Roles { get; set; }
+        public DbSet<NewsEntity> News { get; set; }
+        public DbSet<CommentEntity> Comment { get; set; }
 
         public RipDatabase()
         {
@@ -19,9 +21,16 @@ namespace backend.core.connectors
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<RoleEntity>().HasData(
-                new RoleEntity() {Id = 1, RoleName = AcceptRole.Administrator}, new RoleEntity {Id = 2, RoleName = AcceptRole.User}
+                new RoleEntity {Id = 1, RoleName = AcceptRole.Administrator}, new RoleEntity {Id = 2, RoleName = AcceptRole.User}
             );
             modelBuilder.Entity<UserEntity>(entity => { entity.HasIndex(e => e.Email).IsUnique(); });
+            modelBuilder.Entity<UserEntity>().Property(b => b.CreatedAt).HasDefaultValueSql("NOW()");
+            modelBuilder.Entity<UserEntity>().Property(b => b.UpdatedAt).HasDefaultValueSql("NOW()");
+            modelBuilder.Entity<RoleEntity>().Property(b => b.CreatedAt).HasDefaultValueSql("NOW()");
+            modelBuilder.Entity<RoleEntity>().Property(b => b.UpdatedAt).HasDefaultValueSql("NOW()");
+            modelBuilder.Entity<NewsEntity>().Property(b => b.CreatedAt).HasDefaultValueSql("NOW()");
+            modelBuilder.Entity<NewsEntity>().Property(b => b.UpdatedAt).HasDefaultValueSql("NOW()");
+            
             base.OnModelCreating(modelBuilder);
             Console.WriteLine("Models was updated!");
         }

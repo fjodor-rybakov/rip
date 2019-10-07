@@ -2,10 +2,8 @@
 
 namespace backend.models.entities
 {
-    public class RoleEntity
+    public class RoleEntity : BaseEntity
     {
-        public int Id { get; set; }
-        
         public string RoleName { get; set; }
         
         public List<UserEntity> Users { get; set; }

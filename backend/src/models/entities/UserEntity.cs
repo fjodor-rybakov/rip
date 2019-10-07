@@ -1,11 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace backend.models.entities
 {
-    public class UserEntity
+    public class UserEntity : BaseEntity
     {
-        public int Id { get; set; }
-        
         public string Nickname { get; set; }
         
         [Required]
@@ -13,8 +12,15 @@ namespace backend.models.entities
         
         [Required]
         public string Password { get; set; }
+        
+        public string Avatar { get; set; }
 
         public int RoleId { get; set; }
+        
         public RoleEntity Role { get; set; }
+        
+        public List<NewsEntity> News { get; set; }
+        
+        public List<CommentEntity> CommentNews { get; set; }
     }
 }

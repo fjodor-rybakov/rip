@@ -10,12 +10,10 @@ namespace backend.controllers
     public class AuthController : ControllerBase
     {
         private readonly AuthService _authService;
-        private readonly ApiErrors _apiErrors;
 
-        public AuthController(AuthService authService, ApiErrors apiErrors)
+        public AuthController(AuthService authService)
         {
             _authService = authService;
-            _apiErrors = apiErrors;
         }
         
         [HttpPost("login")]

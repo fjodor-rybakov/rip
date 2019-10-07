@@ -30,5 +30,15 @@ namespace backend.helper
         {
             HttpStatus = (int) HttpStatusCode.Forbidden, Message = "Недостаточно прав"
         };
+        
+        public Error NewsNotFound => new Error
+        {
+            HttpStatus = (int) HttpStatusCode.NotFound, Message = "Новость не найдена"
+        };
+        
+        public Error CommentNotFound => new Error
+        {
+            HttpStatus = (int) HttpStatusCode.NotFound, Message = "Комментарий не найден"
+        };
     }
 }

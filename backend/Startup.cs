@@ -62,7 +62,11 @@ namespace backend
             services.AddControllers();
             services.AddSingleton(sp => new ApiErrors());
             services.AddScoped(sp => new AuthService(new RipDatabase(), authConfig, sp.GetService<ApiErrors>()));
-            services.AddScoped(sp => new AuthController(sp.GetService<AuthService>(), sp.GetService<ApiErrors>()));
+            services.AddScoped(sp => new NewsService(new RipDatabase(), sp.GetService<ApiErrors>()));
+            services.AddScoped(sp => new CommentService(new RipDatabase(), sp.GetService<ApiErrors>()));
+            services.AddScoped(sp => new AuthController(sp.GetService<AuthService>()));
+            services.AddScoped(sp => new NewsController(sp.GetService<NewsService>()));
+            services.AddScoped(sp => new CommentController(sp.GetService<CommentService>()));
 
             services.AddCors(options =>
             {
