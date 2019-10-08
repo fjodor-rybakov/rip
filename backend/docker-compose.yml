@@ -20,6 +20,8 @@ services:
       - FRONTEND_ADDRESS=${FRONTEND_ADDRESS:-http://localhost:5000}
     networks:
       - rip-network
+    volumes:
+      - ../static-server/static:/static-server/static
 
 networks:
   rip-network:

@@ -52,7 +52,7 @@ namespace backend.services
             comment.NewsId = updateCommentDto.NewsId ?? comment.NewsId;
             comment.UserId = updateCommentDto.UserId ?? comment.UserId;
             
-            _db.Comment.Update(comment);
+            _db.SaveChanges();
             return comment.Id;
         }
 

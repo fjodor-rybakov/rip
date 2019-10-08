@@ -15,5 +15,6 @@ RUN dotnet publish backend.csproj -c Release -o /app
 
 FROM base AS final
 WORKDIR /app
+RUN mkdir -p ../static-server/static/user-avatars/
 COPY --from=publish /app .
 ENTRYPOINT ["dotnet", "backend.dll"]

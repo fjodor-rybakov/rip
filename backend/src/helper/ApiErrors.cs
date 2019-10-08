@@ -60,5 +60,19 @@ namespace backend.helper
             Message = "Комментарий не найден",
             Code = 103
         };
+        
+        public Error FailedUploadFile => new Error
+        {
+            HttpStatus = (int) HttpStatusCode.ExpectationFailed,
+            Message = "Неудалось загрузить файл",
+            Code = 104
+        };
+        
+        public Error FileNotFound => new Error
+        {
+            HttpStatus = (int) HttpStatusCode.NotFound,
+            Message = "Файлд не найден",
+            Code = 105
+        };
     }
 }

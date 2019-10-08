@@ -85,7 +85,6 @@ namespace backend
             app.Use(async (context, next) =>
             {
                 await next();
-                Console.WriteLine(context.Response.StatusCode);
                 if (context.Response.StatusCode == 401)
                 {
                     context.Response.ContentType = "application/json";
@@ -119,9 +118,12 @@ namespace backend
             services.AddScoped(sp => new AuthService(new RipDatabase(), _authConfig, sp.GetService<ApiErrors>()));
             services.AddScoped(sp => new NewsService(new RipDatabase(), sp.GetService<ApiErrors>()));
             services.AddScoped(sp => new CommentService(new RipDatabase(), sp.GetService<ApiErrors>()));
+            services.AddScoped(sp => new MediaService(new RipDatabase(), sp.GetService<ApiErrors>()));
+            
             services.AddScoped(sp => new AuthController(sp.GetService<AuthService>()));
             services.AddScoped(sp => new NewsController(sp.GetService<NewsService>()));
             services.AddScoped(sp => new CommentController(sp.GetService<CommentService>()));
+            services.AddScoped(sp => new MediaController(sp.GetService<MediaService>()));
         }
     }
 }
