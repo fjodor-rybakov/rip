@@ -29,7 +29,7 @@ namespace backend.services
         public string Login(LoginUserDto loginUserDto)
         {
             var identity = GetIdentity(loginUserDto);
-            return identity == null ? throw _apiErrors.UserNotFount : GetToken(identity);
+            return GetToken(identity);
         }
 
         public string Registration(CreateUserDto createUserDto)
@@ -77,7 +77,10 @@ namespace backend.services
                     role.RoleName
                 }).FirstOrDefault();
 
-            if (userData == null) return null;
+            if (userData == null)
+            {
+                throw _apiErrors.UserNotFount;
+            }
 
             var claims = new List<Claim>
             {

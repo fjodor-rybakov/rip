@@ -22,17 +22,12 @@ namespace backend
     {
         private const string MyAllowSpecificOrigins = "AllowAll";
         private readonly ApiErrors _apiErrors;
+        private readonly DataAuthConfig _authConfig;
 
         public Startup()
         {
             _apiErrors = new ApiErrors();
-        }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        public void ConfigureServices(IServiceCollection services)
-        {
-            var authConfig = new DataAuthConfig()
+            _authConfig = new DataAuthConfig()
             {
                 Key = Environment.GetEnvironmentVariable("AUTH_KEY"),
                 Audience = Environment.GetEnvironmentVariable("AUTH_AUDIENCE"),
@@ -40,6 +35,12 @@ namespace backend
                 Lifetime = int.Parse(Environment.GetEnvironmentVariable("AUTH_LIFETIME") ??
                                      throw new Exception("AUTH_LIFETIME must me a number"))
             };
+        }
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
+        public void ConfigureServices(IServiceCollection services)
+        {
             services.AddDbContext<RipDatabase>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -48,26 +49,20 @@ namespace backend
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuer = true,
-                        ValidIssuer = authConfig.Issuer,
+                        ValidIssuer = _authConfig.Issuer,
 
                         ValidateAudience = true,
-                        ValidAudience = authConfig.Audience,
+                        ValidAudience = _authConfig.Audience,
                         ValidateLifetime = true,
 
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(authConfig.Key)),
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_authConfig.Key)),
                         ValidateIssuerSigningKey = true
                     };
                 });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest).AddNewtonsoftJson();
             services.AddControllers();
-            services.AddSingleton(sp => new ApiErrors());
-            services.AddScoped(sp => new AuthService(new RipDatabase(), authConfig, sp.GetService<ApiErrors>()));
-            services.AddScoped(sp => new NewsService(new RipDatabase(), sp.GetService<ApiErrors>()));
-            services.AddScoped(sp => new CommentService(new RipDatabase(), sp.GetService<ApiErrors>()));
-            services.AddScoped(sp => new AuthController(sp.GetService<AuthService>()));
-            services.AddScoped(sp => new NewsController(sp.GetService<NewsService>()));
-            services.AddScoped(sp => new CommentController(sp.GetService<CommentService>()));
-
+            ResolveDependency(services);
+            
             services.AddCors(options =>
             {
                 options.AddPolicy(MyAllowSpecificOrigins,
@@ -86,20 +81,11 @@ namespace backend
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseExceptionHandler(errorApp =>
-                AppHandlerExceptionMiddleware.AppHandlerException(errorApp, _apiErrors));
-
-            app.UseRouting();
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapGet("/", async context => { await context.Response.WriteAsync("Hello World!"); });
-                endpoints.MapControllers();
-            });
-
+            
             app.Use(async (context, next) =>
             {
                 await next();
+                Console.WriteLine(context.Response.StatusCode);
                 if (context.Response.StatusCode == 401)
                 {
                     context.Response.ContentType = "application/json";
@@ -112,8 +98,30 @@ namespace backend
                     await context.Response.WriteAsync(JsonConvert.SerializeObject(_apiErrors.AccessDenied));
                 }
             });
-            app.UseCors(MyAllowSpecificOrigins);
-            app.UseAuthentication();
+
+            app.UseRouting()
+                .UseCors(MyAllowSpecificOrigins)
+                .UseAuthentication()
+                .UseAuthorization()
+                .UseExceptionHandler(errorApp =>
+                    AppHandlerExceptionMiddleware.AppHandlerException(errorApp, _apiErrors));
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapGet("/", async context => { await context.Response.WriteAsync("Hello World!"); });
+                endpoints.MapControllers();
+            });
+        }
+
+        private void ResolveDependency(IServiceCollection services)
+        {
+            services.AddSingleton(sp => new ApiErrors());
+            services.AddScoped(sp => new AuthService(new RipDatabase(), _authConfig, sp.GetService<ApiErrors>()));
+            services.AddScoped(sp => new NewsService(new RipDatabase(), sp.GetService<ApiErrors>()));
+            services.AddScoped(sp => new CommentService(new RipDatabase(), sp.GetService<ApiErrors>()));
+            services.AddScoped(sp => new AuthController(sp.GetService<AuthService>()));
+            services.AddScoped(sp => new NewsController(sp.GetService<NewsService>()));
+            services.AddScoped(sp => new CommentController(sp.GetService<CommentService>()));
         }
     }
 }

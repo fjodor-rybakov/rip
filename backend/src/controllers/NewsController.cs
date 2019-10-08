@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using backend.models.assets;
 using backend.models.dto.news;
 using backend.services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.controllers
@@ -16,6 +18,7 @@ namespace backend.controllers
             _newsService = newsService;
         }
 
+        [Authorize(Roles = AcceptRole.Administrator)]
         [HttpGet]
         public ActionResult<List<NewsListDto>> GetNewsList()
         {
