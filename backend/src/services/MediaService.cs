@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using backend.core.connectors;
 using backend.helper;
+using backend.helper.enums;
 using backend.models.dto.media;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -23,40 +24,45 @@ namespace backend.services
 
         public List<CreatedMediaDto> UploadMedia([FromBody] TypeIdUpload typeIdUpload)
         {
-            try
+            if (typeIdUpload.UserId != null)
             {
-                if (typeIdUpload.UserId != null)
+                var user = _db.Users.FirstOrDefault(u => u.Id == typeIdUpload.UserId);
+                if (user == null)
                 {
-                    var user = _db.Users.FirstOrDefault(u => u.Id == typeIdUpload.UserId);
-                    if (user == null)
-                    {
-                        throw _apiErrors.UserNotFount;
-                    }
-
-                    var avatar = typeIdUpload.Files.FirstOrDefault();
-                    var newFileName = UploadFile(avatar);
-                    user.Avatar = newFileName;
-                    _db.SaveChanges();
-                    return new List<CreatedMediaDto> {new CreatedMediaDto {FileName = newFileName}};
+                    throw _apiErrors.UserNotFount;
                 }
 
-                if (typeIdUpload.NewsId != null)
-                {
-                    return typeIdUpload.Files.Select(UploadFile)
-                        .Select(newFileName => new CreatedMediaDto {FileName = newFileName}).ToList();
-                }
+                var avatar = typeIdUpload.Files.FirstOrDefault();
+                var newFileName = UploadFile(avatar, ETypeUpload.UserAvatar);
+                user.Avatar = newFileName;
+                _db.SaveChanges();
+                return new List<CreatedMediaDto> {new CreatedMediaDto {FileName = newFileName}};
+            }
 
-                return new List<CreatedMediaDto>();
-            }
-            catch (Exception e)
+            if (typeIdUpload.NewsId != null)
             {
-                throw _apiErrors.FailedUploadFile;
+                var news = _db.News.FirstOrDefault(u => u.Id == typeIdUpload.NewsId);
+                if (news == null)
+                {
+                    throw _apiErrors.NewsNotFound;
+                }
+                return typeIdUpload.Files.Select(file => UploadFile(file, ETypeUpload.NewsImages))
+                    .Select(newFileName => new CreatedMediaDto {FileName = newFileName}).ToList();
             }
+            
+            return new List<CreatedMediaDto>();
         }
 
-        private string UploadFile(IFormFile file)
+        private string UploadFile(IFormFile file, ETypeUpload eTypeUpload)
         {
-            const string path = @"../static-server/static/user-avatars/";
+            var path = "";
+            if (eTypeUpload == ETypeUpload.NewsImages)
+            {
+                path = @"../static-server/static/photo-news/";
+            } else if (eTypeUpload == ETypeUpload.UserAvatar)
+            {
+                path = @"../static-server/static/user-avatars/";
+            }
             if (file == null)
             {
                 throw _apiErrors.FileNotFound;

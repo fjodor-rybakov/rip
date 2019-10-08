@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using backend.models.dto.media;
 using backend.services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.controllers
