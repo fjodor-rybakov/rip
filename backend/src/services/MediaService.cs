@@ -26,12 +26,7 @@ namespace backend.services
         {
             if (typeIdUpload.UserId != null)
             {
-                var user = _db.Users.FirstOrDefault(u => u.Id == typeIdUpload.UserId);
-                if (user == null)
-                {
-                    throw _apiErrors.UserNotFount;
-                }
-
+                var user = _db.Users.FirstOrDefault(u => u.Id == typeIdUpload.UserId)  ?? throw _apiErrors.UserNotFount;
                 var avatar = typeIdUpload.Files.FirstOrDefault();
                 var newFileName = UploadFile(avatar, ETypeUpload.UserAvatar);
                 user.Avatar = newFileName;
@@ -53,6 +48,29 @@ namespace backend.services
             return new List<CreatedMediaDto>();
         }
 
+        public void DeleteFile(string fileName, ETypeUpload eTypeUpload)
+        {
+            var path = "";
+            if (eTypeUpload == ETypeUpload.NewsImages)
+            {
+                path = @"../static-server/static/photo-news/";
+                var news = _db.News.FirstOrDefault(n => n.PathToImages.Contains(fileName)) ?? throw _apiErrors.NewsNotFound;
+                var newsImagePosition = news.PathToImages.IndexOf(fileName);
+                if (newsImagePosition == -1)
+                {
+                    throw _apiErrors.FileNotFound;
+                }
+                news.PathToImages.RemoveAt(newsImagePosition);
+            } else if (eTypeUpload == ETypeUpload.UserAvatar)
+            {
+                path = @"../static-server/static/user-avatars/";
+                var user = _db.Users.FirstOrDefault(entity => entity.Avatar == fileName) ?? throw _apiErrors.UserNotFount;
+                user.Avatar = null;
+            }
+            _db.SaveChanges();
+            File.Delete(path + fileName);
+        }
+        
         private string UploadFile(IFormFile file, ETypeUpload eTypeUpload)
         {
             var path = "";

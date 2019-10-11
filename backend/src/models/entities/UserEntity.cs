@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace backend.models.entities
 {
@@ -12,7 +13,6 @@ namespace backend.models.entities
         
         [Required]
         public string Password { get; set; }
-        
         public string Avatar { get; set; }
 
         public int RoleId { get; set; }

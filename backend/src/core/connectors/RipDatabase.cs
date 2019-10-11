@@ -23,6 +23,12 @@ namespace backend.core.connectors
             modelBuilder.Entity<RoleEntity>().HasData(
                 new RoleEntity {Id = 1, RoleName = AcceptRole.Administrator}, new RoleEntity {Id = 2, RoleName = AcceptRole.User}
             );
+            modelBuilder.Entity<UserEntity>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
+            modelBuilder.Entity<UserEntity>()
+                .HasIndex(u => u.Avatar)
+                .IsUnique();
             modelBuilder.Entity<UserEntity>(entity => { entity.HasIndex(e => e.Email).IsUnique(); });
             modelBuilder.Entity<UserEntity>().Property(b => b.CreatedAt).HasDefaultValueSql("NOW()");
             modelBuilder.Entity<UserEntity>().Property(b => b.UpdatedAt).HasDefaultValueSql("NOW()");

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using backend.helper.enums;
 using backend.models.dto.media;
 using backend.services;
 using Microsoft.AspNetCore.Mvc;
@@ -17,9 +18,19 @@ namespace backend.controllers
         }
 
         [HttpPut("upload")]
-        public List<CreatedMediaDto> UploadMedia([FromForm]TypeIdUpload typeIdUpload)
+        public ActionResult<List<CreatedMediaDto>> UploadMedia([FromForm]TypeIdUpload typeIdUpload)
         {
-            return _mediaService.UploadMedia(typeIdUpload);
+            return new OkObjectResult(_mediaService.UploadMedia(typeIdUpload));
+        }
+
+        [HttpDelete("{fileName}/{eTypeUpload}")]
+        public ActionResult DeleteFile(string fileName, ETypeUpload eTypeUpload)
+        {
+            _mediaService.DeleteFile(fileName, eTypeUpload);
+            return new OkObjectResult(new
+            {
+                Message = "Фотография успешно удалена"
+            });
         }
     }
 }
