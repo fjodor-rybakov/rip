@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using backend.core.connectors;
 using backend.helper;
@@ -23,16 +24,16 @@ namespace backend.services
         {
             return (
                 from newsEntity in _db.News
-                from userEntity in _db.Users.Where(x => newsEntity.UserId == x.Id).DefaultIfEmpty()
-                select new
+                from userEntity in _db.Users
+                select new NewsListDto
                 {
-                    newsEntity.Title,
-                    newsEntity.Description,
-                    newsEntity.PathToImages,
-                    newsEntity.CreatedAt,
-                    userEntity.Nickname,
-                    userEntity.Avatar,
-                }).Select(entity => new NewsListDto()).ToList();
+                    Title = newsEntity.Title,
+                    Description = newsEntity.Description,
+                    PathToImages = newsEntity.PathToImages,
+                    CreatedAt = newsEntity.CreatedAt,
+                    Nickname = userEntity.Nickname,
+                    Avatar = userEntity.Avatar,
+                }).ToList();
         }
 
         public int CreateNews(CreateNewsDto createUserDto)
@@ -63,6 +64,11 @@ namespace backend.services
         public void DeleteNews(int id)
         {
             var news = GetNewsEntity(id);
+            var path = Environment.GetEnvironmentVariable("PATH_IMAGES_NEWS");
+            foreach (var item in news.PathToImages)
+            {
+                File.Delete(path + item);
+            }
             _db.Remove(news);
         }
 

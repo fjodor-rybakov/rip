@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using backend.helper;
 using backend.models.dto.comment;
 using backend.services;
 using Microsoft.AspNetCore.Mvc;
@@ -23,15 +24,15 @@ namespace backend.controllers
         }
 
         [HttpPost]
-        public ActionResult CreateComment([FromBody] CreateCommentDto createCommentDto)
+        public ActionResult<IdDto> CreateComment([FromBody] CreateCommentDto createCommentDto)
         {
-            return new OkObjectResult(new { CreatedId = _commentService.CreateComment(createCommentDto) });
+            return new OkObjectResult(new { Id = _commentService.CreateComment(createCommentDto) });
         }
 
         [HttpPut(":id")]
-        public ActionResult UpdateComment(int id, [FromBody] UpdateCommentDto updateCommentDto)
+        public ActionResult<IdDto> UpdateComment(int id, [FromBody] UpdateCommentDto updateCommentDto)
         {
-            return new OkObjectResult(new { UpdatedId = _commentService.UpdateComment(id, updateCommentDto) });
+            return new OkObjectResult(new { Id = _commentService.UpdateComment(id, updateCommentDto) });
         }
         
         [HttpDelete(":id")]

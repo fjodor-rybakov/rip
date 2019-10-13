@@ -17,7 +17,9 @@ services:
       - AUTH_AUDIENCE=${AUTH_AUDIENCE:-http://localhost:5001}
       - AUTH_ISSUER=${AUTH_ISSUER:-MyAuthServer}
       - AUTH_LIFETIME=${AUTH_LIFETIME:-60}
-      - FRONTEND_ADDRESS=${FRONTEND_ADDRESS:-http://localhost:5000}
+      - FRONTEND_ADDRESS=${FRONTEND_ADDRESS:-http://localhost:4200}
+      - PATH_IMAGES_NEWS=${PATH_IMAGES_NEWS:-../static-server/static/photo-news/}
+      - PATH_IMAGES_AVATARS=${PATH_IMAGES_AVATARS:-../static-server/static/user-avatars/}
     networks:
       - rip-network
     volumes:

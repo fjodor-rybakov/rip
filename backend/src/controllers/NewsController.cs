@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using backend.helper;
 using backend.models.assets;
 using backend.models.dto.news;
 using backend.services;
@@ -18,7 +19,6 @@ namespace backend.controllers
             _newsService = newsService;
         }
 
-        [Authorize(Roles = AcceptRole.Administrator)]
         [HttpGet]
         public ActionResult<List<NewsListDto>> GetNewsList()
         {
@@ -26,15 +26,15 @@ namespace backend.controllers
         }
 
         [HttpPost]
-        public ActionResult CreateNews([FromBody] CreateNewsDto createUserDto)
+        public ActionResult<IdDto> CreateNews([FromBody] CreateNewsDto createUserDto)
         {
-            return new OkObjectResult(new { CreatedId = _newsService.CreateNews(createUserDto) });
+            return new OkObjectResult(new { Id = _newsService.CreateNews(createUserDto) });
         }
 
         [HttpPut(":id")]
-        public ActionResult UpdateNews(int id, [FromBody] UpdatedNewsDto updatedNewsDto)
+        public ActionResult<IdDto> UpdateNews(int id, [FromBody] UpdatedNewsDto updatedNewsDto)
         {
-            return new OkObjectResult(new { UpdatedId = _newsService.UpdateNews(id, updatedNewsDto) });
+            return new OkObjectResult(new { Id = _newsService.UpdateNews(id, updatedNewsDto) });
         }
         
         [HttpDelete(":id")]

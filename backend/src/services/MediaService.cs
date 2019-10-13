@@ -53,7 +53,7 @@ namespace backend.services
             var path = "";
             if (eTypeUpload == ETypeUpload.NewsImages)
             {
-                path = @"../static-server/static/photo-news/";
+                path = Environment.GetEnvironmentVariable("PATH_IMAGES_NEWS");
                 var news = _db.News.FirstOrDefault(n => n.PathToImages.Contains(fileName)) ?? throw _apiErrors.NewsNotFound;
                 var newsImagePosition = news.PathToImages.IndexOf(fileName);
                 if (newsImagePosition == -1)
@@ -63,7 +63,7 @@ namespace backend.services
                 news.PathToImages.RemoveAt(newsImagePosition);
             } else if (eTypeUpload == ETypeUpload.UserAvatar)
             {
-                path = @"../static-server/static/user-avatars/";
+                path = Environment.GetEnvironmentVariable("PATH_IMAGES_AVATARS");
                 var user = _db.Users.FirstOrDefault(entity => entity.Avatar == fileName) ?? throw _apiErrors.UserNotFount;
                 user.Avatar = null;
             }
@@ -76,10 +76,10 @@ namespace backend.services
             var path = "";
             if (eTypeUpload == ETypeUpload.NewsImages)
             {
-                path = @"../static-server/static/photo-news/";
+                path = Environment.GetEnvironmentVariable("PATH_IMAGES_NEWS");
             } else if (eTypeUpload == ETypeUpload.UserAvatar)
             {
-                path = @"../static-server/static/user-avatars/";
+                path = Environment.GetEnvironmentVariable("PATH_IMAGES_AVATARS");
             }
             if (file == null)
             {
