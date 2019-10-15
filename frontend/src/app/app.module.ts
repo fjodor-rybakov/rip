@@ -3,15 +3,19 @@ import { NgModule } from "@angular/core";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
-import { NewsComponent } from "./modules/news/news.component";
+import { NewsComponent } from "./components/news/news.component";
 import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
 import { AuthenticationInterceptor } from "./interceptors/authentication.interceptor";
 import { ApiInterceptor } from "./interceptors/api.interceptor";
+import { LoginComponent } from "./components/login/login.component";
+import { RegistrationComponent } from "./components/registration/registration.component";
 
 @NgModule({
   declarations: [
     AppComponent,
-    NewsComponent
+    NewsComponent,
+    LoginComponent,
+    RegistrationComponent
   ],
   imports: [
     BrowserModule,
