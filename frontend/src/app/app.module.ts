@@ -10,6 +10,8 @@ import { ApiInterceptor } from "./interceptors/api.interceptor";
 import { LoginComponent } from "./components/login/login.component";
 import { RegistrationComponent } from "./components/registration/registration.component";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { CommonModule } from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -22,7 +24,10 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    NgbModule
+    NgbModule,
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [
     {
