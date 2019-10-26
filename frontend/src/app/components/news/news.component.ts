@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { NewsService } from "../../services/news/news.service";
-import { INews } from "../../shared/interfaces/INews";
+import { INews } from "../../services/news/interfaces/INews";
 
 @Component({
   templateUrl: "./page/news.component.html",
@@ -10,10 +10,11 @@ import { INews } from "../../shared/interfaces/INews";
 export class NewsComponent implements OnInit {
   public newsListData: INews[] = [];
 
-  constructor(private readonly newsService: NewsService) { }
+  constructor(private readonly newsService: NewsService) {
+  }
 
   async ngOnInit() {
-    this.newsListData = await this.newsService.getNewsList();
+    this.newsListData = await this.newsService.getNewsList().toPromise();
     console.log(this.newsListData[0].title);
   }
 }

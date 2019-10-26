@@ -34,8 +34,9 @@ namespace backend.services
 
         public string Registration(CreateUserDto createUserDto)
         {
-            var user = _db.Users.Select(userEntity =>
+            var user = _db.Users.Where(userEntity =>
                 userEntity.Email == createUserDto.Email || userEntity.Nickname == createUserDto.Nickname).ToList();
+            Console.WriteLine(user);
             if (user.Count != 0)
             {
                 throw _apiErrors.UserAlreadyExist;
@@ -43,9 +44,10 @@ namespace backend.services
 
             var newUserEntity = new UserEntity()
             {
-                Email = createUserDto.Email, Nickname = createUserDto.Nickname, Password = createUserDto.Password
+                Email = createUserDto.Email, Nickname = createUserDto.Nickname, Password = createUserDto.Password, RoleId = 1
             };
             _db.Users.Add(newUserEntity);
+            _db.SaveChanges();
             return "Пользователь был зарегистрирован";
         }
 

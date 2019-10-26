@@ -44,6 +44,7 @@ namespace backend.services
                 return typeIdUpload.Files.Select(file => UploadFile(file, ETypeUpload.NewsImages))
                     .Select(newFileName => new CreatedMediaDto {FileName = newFileName}).ToList();
             }
+            _db.SaveChanges();
             
             return new List<CreatedMediaDto>();
         }
@@ -88,6 +89,7 @@ namespace backend.services
 
             var newName = $"{Guid.NewGuid().ToString()}.{file.FileName.Split('.').Last()}";
             file.CopyTo(new FileStream(path + newName, FileMode.Create));
+            _db.SaveChanges();
             return newName;
         }
     }

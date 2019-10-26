@@ -46,6 +46,7 @@ namespace backend.services
                 UserId = createUserDto.UserId
             };
             _db.News.Add(createdNews);
+            _db.SaveChanges();
             return createdNews.Id;
         }
 
@@ -58,6 +59,7 @@ namespace backend.services
             news.UserId = updatedNewsDto.UserId ?? news.UserId;
             
             _db.News.Update(news);
+            _db.SaveChanges();
             return news.Id;
         }
 

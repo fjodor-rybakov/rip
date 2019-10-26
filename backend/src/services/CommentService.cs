@@ -41,6 +41,7 @@ namespace backend.services
                 UserId = createCommentDto.UserId
             };
             _db.Comment.Add(createdComment);
+            _db.SaveChanges();
             return createdComment.Id;
         }
 
