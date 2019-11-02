@@ -3,7 +3,7 @@ import { NgModule } from "@angular/core";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
-import { NewsComponent } from "./components/news/news.component";
+import { NewsComponent } from "./components/news/list/news.component";
 import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
 import { AuthenticationInterceptor } from "./interceptors/authentication.interceptor";
 import { ApiInterceptor } from "./interceptors/api.interceptor";
@@ -12,13 +12,17 @@ import { RegistrationComponent } from "./components/registration/registration.co
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
+import { NewsCreateComponent } from "./components/news/create/news-create.component";
+import { ProfileComponent } from "./components/profile/profile.component";
 
 @NgModule({
   declarations: [
     AppComponent,
     NewsComponent,
     LoginComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    NewsCreateComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,

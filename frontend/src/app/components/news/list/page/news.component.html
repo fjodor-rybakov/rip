@@ -1,0 +1,23 @@
+<div class="outer container align-self-center news" *ngIf="newsService">
+  <h2 class="main-title">Новости</h2>
+  <div *ngFor='let news of newsListData' class="news-post">
+    <div>
+      <div>
+        <img *ngIf="news.avatar" src="http://localhost:5002/user-avatars/{{news.avatar}}" class="rounded-circle" alt="user-avatar" id="user-avatar">
+        <label for="user-avatar">{{news.nickname}}</label>
+      </div>
+    </div>
+    <div class="container news-info">
+      <h4>{{news.title}}</h4>
+      <div *ngFor='let imagePath of news.pathToImages' class="row">
+        <img class="col" src="http://localhost:5002/photo-news/{{imagePath}}" alt="news-photo">
+      </div>
+      <div>
+        <p class="news-description">
+          {{news.description}}
+        </p>
+      </div>
+    </div>
+    <div class="low-line"></div>
+  </div>
+</div>

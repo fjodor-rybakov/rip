@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
-import { NewsService } from "../../services/news/news.service";
-import { INews } from "../../services/news/interfaces/INews";
+import { NewsService } from "../../../services/news/news.service";
+import { INews } from "../../../services/news/interfaces/INews";
 
 @Component({
   templateUrl: "./page/news.component.html",
@@ -15,6 +15,6 @@ export class NewsComponent implements OnInit {
 
   async ngOnInit() {
     this.newsListData = await this.newsService.getNewsList().toPromise();
-    console.log(this.newsListData[0].title);
+    console.log(this.newsListData);
   }
 }

@@ -5,7 +5,7 @@ export interface INews extends IUser {
 
   description: string;
 
-  imagePaths: string[];
+  pathToImages: string[];
 
   createdAt: Date;
 }

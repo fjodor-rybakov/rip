@@ -1,1 +1,21 @@
+<div class="container align-self-center header">
+  <nav class="navbar">
+
+    <!-- logo -->
+    <div class="navbar-brand">
+      <a class="navbar-item" href="/">
+        <img src="../assets/logo/logo.jpg" alt="logo" class="logo" id="logo"/>
+        <label for="logo">Блог новостей</label>
+      </a>
+    </div>
+
+    <div *ngIf="router.url == '/'" class="navbar-item">
+      <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" id="customControlInline">
+        <label class="custom-control-label" for="customControlInline">Только мои новости</label>
+      </div>
+    </div>
+
+  </nav>
+</div>
 <router-outlet></router-outlet>

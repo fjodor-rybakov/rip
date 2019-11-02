@@ -71,7 +71,7 @@ namespace backend.helper
         public Error FileNotFound => new Error
         {
             HttpStatus = (int) HttpStatusCode.NotFound,
-            Message = "Файлд не найден",
+            Message = "Файл не найден",
             Code = 105
         };
     }

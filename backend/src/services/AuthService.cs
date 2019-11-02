@@ -9,6 +9,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using backend.core.configs;
 using backend.helper;
+using backend.models.assets;
 using backend.models.entities;
 
 namespace backend.services
@@ -51,6 +52,20 @@ namespace backend.services
             return "Пользователь был зарегистрирован";
         }
 
+        public TokenInfo GetTokenInfo(string token)
+        {
+            Console.WriteLine(token);
+            var handler = new JwtSecurityTokenHandler();
+            if (handler.CanReadToken(token) && handler.ReadToken(token) is JwtSecurityToken tokenS)
+                return new TokenInfo
+                {
+                    Email = tokenS.Claims.FirstOrDefault(claim => claim.Type == "Email")?.Value,
+                    RoleName = tokenS.Claims.FirstOrDefault(claim => claim.Type == "RoleName")?.Value,
+                    UserId = int.Parse(tokenS.Claims.FirstOrDefault(claim => claim.Type == "UserId")?.Value ?? throw new Exception("UserId must me a number"))
+                };
+            throw _apiErrors.InvalidToken;
+        }
+
         private string GetToken(ClaimsIdentity identity)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_authConfig.Key));
@@ -76,7 +91,8 @@ namespace backend.services
                 select new
                 {
                     user.Email,
-                    role.RoleName
+                    role.RoleName,
+                    user.Id
                 }).FirstOrDefault();
 
             if (userData == null)
@@ -87,7 +103,8 @@ namespace backend.services
             var claims = new List<Claim>
             {
                 new Claim(ClaimsIdentity.DefaultNameClaimType, userData.Email),
-                new Claim(ClaimsIdentity.DefaultRoleClaimType, userData.RoleName)
+                new Claim(ClaimsIdentity.DefaultRoleClaimType, userData.RoleName),
+                new Claim("UserId", userData.Id.ToString())
             };
 
             return new ClaimsIdentity(

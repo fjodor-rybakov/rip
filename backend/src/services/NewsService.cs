@@ -24,7 +24,7 @@ namespace backend.services
         {
             return (
                 from newsEntity in _db.News
-                from userEntity in _db.Users
+                join userEntity in _db.Users on newsEntity.UserId equals userEntity.Id 
                 select new NewsListDto
                 {
                     Title = newsEntity.Title,

@@ -119,11 +119,13 @@ namespace backend
             services.AddScoped(sp => new NewsService(new RipDatabase(), sp.GetService<ApiErrors>()));
             services.AddScoped(sp => new CommentService(new RipDatabase(), sp.GetService<ApiErrors>()));
             services.AddScoped(sp => new MediaService(new RipDatabase(), sp.GetService<ApiErrors>()));
+            services.AddScoped(sp => new ProfileService(new RipDatabase(), sp.GetService<ApiErrors>()));
             
             services.AddScoped(sp => new AuthController(sp.GetService<AuthService>()));
             services.AddScoped(sp => new NewsController(sp.GetService<NewsService>()));
             services.AddScoped(sp => new CommentController(sp.GetService<CommentService>()));
             services.AddScoped(sp => new MediaController(sp.GetService<MediaService>()));
+            services.AddScoped(sp => new ProfileController(sp.GetService<ProfileService>(), sp.GetService<AuthService>()));
         }
     }
 }
