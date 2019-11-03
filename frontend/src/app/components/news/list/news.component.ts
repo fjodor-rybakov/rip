@@ -15,6 +15,5 @@ export class NewsComponent implements OnInit {
 
   async ngOnInit() {
     this.newsListData = await this.newsService.getNewsList().toPromise();
-    console.log(this.newsListData);
   }
 }

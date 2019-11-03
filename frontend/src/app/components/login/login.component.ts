@@ -23,7 +23,6 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.loginForm);
     if (!this.loginForm.valid) {
       console.log("Некорректные данные!");
       return;

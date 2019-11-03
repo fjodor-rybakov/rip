@@ -7,6 +7,7 @@
         public string Password { get; set; }
         public string Avatar { get; set; }
         public string Info { get; set; }
+        public int Id { get; set; }
         public int RoleId { get; set; }
     }
 }

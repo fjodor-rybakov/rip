@@ -6,8 +6,8 @@ import { Observable } from "rxjs";
 export class ApiInterceptor implements HttpInterceptor {
   private readonly backendServerAddress = "http://localhost:5001/api";
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const apiReq = req.clone({ url: `${this.backendServerAddress}/${req.url}` });
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    const apiReq = request.clone({ url: `${this.backendServerAddress}/${request.url}` });
     return next.handle(apiReq);
   }
 
