@@ -26,7 +26,8 @@ namespace backend.services
                     Avatar = userEntity.Avatar,
                     Email = userEntity.Email,
                     Password = userEntity.Password,
-                    RoleId = userEntity.RoleId
+                    RoleId = userEntity.RoleId,
+                    Info = userEntity.Info
                 }).FirstOrDefault();
 
             if (user == null)

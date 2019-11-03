@@ -14,6 +14,7 @@ namespace backend.models.entities
         [Required]
         public string Password { get; set; }
         public string Avatar { get; set; }
+        public string Info { get; set; }
 
         public int RoleId { get; set; }
         
