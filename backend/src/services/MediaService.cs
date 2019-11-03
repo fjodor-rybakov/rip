@@ -41,10 +41,12 @@ namespace backend.services
                 {
                     throw _apiErrors.NewsNotFound;
                 }
-                return typeIdUpload.Files.Select(file => UploadFile(file, ETypeUpload.NewsImages))
+                var newsFiles = typeIdUpload.Files.Select(file => UploadFile(file, ETypeUpload.NewsImages))
                     .Select(newFileName => new CreatedMediaDto {FileName = newFileName}).ToList();
+                news.PathToImages = newsFiles.Select(item => item.FileName).ToList();
+                _db.SaveChanges();
+                return newsFiles;
             }
-            _db.SaveChanges();
             
             return new List<CreatedMediaDto>();
         }
@@ -89,7 +91,6 @@ namespace backend.services
 
             var newName = $"{Guid.NewGuid().ToString()}.{file.FileName.Split('.').Last()}";
             file.CopyTo(new FileStream(path + newName, FileMode.Create));
-            _db.SaveChanges();
             return newName;
         }
     }

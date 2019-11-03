@@ -37,7 +37,6 @@ namespace backend.services
         {
             var user = _db.Users.Where(userEntity =>
                 userEntity.Email == createUserDto.Email || userEntity.Nickname == createUserDto.Nickname).ToList();
-            Console.WriteLine(user);
             if (user.Count != 0)
             {
                 throw _apiErrors.UserAlreadyExist;
@@ -54,7 +53,6 @@ namespace backend.services
 
         public TokenInfo GetTokenInfo(string token)
         {
-            Console.WriteLine(token);
             var handler = new JwtSecurityTokenHandler();
             if (handler.CanReadToken(token) && handler.ReadToken(token) is JwtSecurityToken tokenS)
                 return new TokenInfo
