@@ -1,0 +1,11 @@
+<div *ngIf="userProfile" class="outer container align-self-center profile">
+  <div class="row">
+    <div class="col-lg-5">
+      <img src="http://localhost:5002/user-avatars/{{userProfile.avatar}}" alt="user-avatar" class="user-avatar">
+    </div>
+    <div>
+      <h3>Обо мне</h3>
+      <p class="text-justify profile-paragraph">{{userProfile.info}}</p>
+    </div>
+  </div>
+</div>

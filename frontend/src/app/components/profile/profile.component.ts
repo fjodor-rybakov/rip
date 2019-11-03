@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ProfileService } from "../../services/profile/profile.service";
+import { IProfile } from "../../services/profile/interfaces/IProfile";
 
 @Component({
   templateUrl: "./page/profile.component.html",
@@ -7,10 +8,12 @@ import { ProfileService } from "../../services/profile/profile.service";
   providers: [ProfileService]
 })
 export class ProfileComponent implements OnInit {
-  constructor(private readonly profileService: ProfileService) {
+  public userProfile?: IProfile;
 
+  constructor(private readonly profileService: ProfileService) {
   }
 
-  async ngOnInit() {
+  public async ngOnInit() {
+    this.userProfile = await this.profileService.getProfile().toPromise();
   }
 }

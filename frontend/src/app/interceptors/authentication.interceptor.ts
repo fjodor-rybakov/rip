@@ -1,18 +1,25 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { ETokenType } from "../shared/enums/ETokenType";
+import { TokenStorageService } from "../services/storage/token-storage.service";
 
 @Injectable()
 export class AuthenticationInterceptor implements HttpInterceptor {
   private readonly blackList = ["login", "registration"];
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const token = localStorage.getItem(ETokenType.ACCESS_TOKEN);
-    if (!this.blackList.includes(req.url)) {
-      req.headers.append("Authorization", `Bearer ${token}`);
+  constructor(private tokenStorageService: TokenStorageService) {
+  }
+
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    const token = this.tokenStorageService.getAccessTokenName();
+    if (!this.blackList.includes(request.url)) {
+      request = request.clone({
+        setHeaders: {
+          Authorization: `Bearer ${token}`
+        }
+      });
     }
-    return next.handle(req);
+    return next.handle(request);
   }
 
 }

@@ -4,4 +4,5 @@ export interface IProfile extends IUser {
   email: string;
   password: string;
   roleId: number;
+  info?: string;
 }

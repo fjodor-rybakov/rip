@@ -14,6 +14,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 import { NewsCreateComponent } from "./components/news/create/news-create.component";
 import { ProfileComponent } from "./components/profile/profile.component";
+import { TokenStorageService } from "./services/storage/token-storage.service";
 
 @NgModule({
   declarations: [
@@ -34,10 +35,12 @@ import { ProfileComponent } from "./components/profile/profile.component";
     ReactiveFormsModule
   ],
   providers: [
+    TokenStorageService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthenticationInterceptor,
       multi: true,
+      deps: [TokenStorageService]
     },
     {
       provide: HTTP_INTERCEPTORS,
