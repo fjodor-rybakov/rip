@@ -5,13 +5,15 @@ import { RegistrationComponent } from "./components/registration/registration.co
 import { LoginComponent } from "./components/login/login.component";
 import { NewsCreateComponent } from "./components/news/create/news-create.component";
 import { ProfileComponent } from "./components/profile/profile.component";
+import { AuthGuard } from "./guards/auth.guard";
 
 const routes: Routes = [
   {path: "", component: NewsComponent},
   {path: "registration", component: RegistrationComponent},
   {path: "login", component: LoginComponent},
-  {path: "profile", component: ProfileComponent},
-  {path: "news/create", component: NewsCreateComponent},
+  {path: "profile", component: ProfileComponent, canActivate: [AuthGuard]},
+  {path: "news/create", component: NewsCreateComponent, canActivate: [AuthGuard]},
+  { path: "**", redirectTo: "" }
 ];
 
 @NgModule({

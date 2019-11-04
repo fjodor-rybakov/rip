@@ -11,4 +11,8 @@ export class TokenStorageService {
   public getAccessTokenName(): string | null {
     return localStorage.getItem(this.accessTokenName);
   }
+
+  public deleteAccessToken() {
+    localStorage.removeItem(this.accessTokenName);
+  }
 }

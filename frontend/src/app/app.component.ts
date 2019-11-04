@@ -1,5 +1,7 @@
 import { Component } from "@angular/core";
 import { Router } from "@angular/router";
+import { TokenStorageService } from "./services/storage/token-storage.service";
+import { AuthService } from "./services/auth/auth.service";
 
 @Component({
   selector: "app-root",
@@ -7,8 +9,10 @@ import { Router } from "@angular/router";
   styleUrls: ["./app.component.scss"]
 })
 export class AppComponent {
-  title = "frontend";
-  constructor(public router: Router) {
-
+  constructor(
+    public router: Router,
+    private readonly tokenStorageService: TokenStorageService,
+    private readonly authService: AuthService
+  ) {
   }
 }

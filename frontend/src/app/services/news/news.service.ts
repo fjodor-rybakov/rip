@@ -4,7 +4,7 @@ import { INews } from "./interfaces/INews";
 import { Observable } from "rxjs";
 import { IId } from "../../shared/interfaces/IId";
 import { ICUNews } from "./interfaces/ICUNews";
-import { IMessage } from "../../shared/interfaces/IMessage";
+import { Message } from "../../shared/interfaces/Message";
 
 @Injectable()
 export class NewsService {
@@ -23,7 +23,7 @@ export class NewsService {
     return this.httpClient.put<IId>(`news/${id}`, body);
   }
 
-  public deleteNews(id: number): Observable<IMessage> {
-    return this.httpClient.delete<IMessage>(`news/${id}`);
+  public deleteNews(id: number): Observable<Message> {
+    return this.httpClient.delete<Message>(`news/${id}`);
   }
 }

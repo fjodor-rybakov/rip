@@ -1,33 +1,36 @@
 import { Component, OnInit } from "@angular/core";
 import { AuthService } from "../../services/auth/auth.service";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { IRegistration } from "../../services/auth/interfaces/IRegistration";
 import { ILogin } from "../../services/auth/interfaces/ILogin";
-import { TokenStorageService } from "../../services/storage/token-storage.service";
+import { Message } from "../../shared/interfaces/Message";
 
 @Component({
   templateUrl: "./page/login.component.html",
   styleUrls: ["./page/login.component.scss"],
-  providers: [AuthService, TokenStorageService]
+  providers: [AuthService]
 })
 export class LoginComponent implements OnInit {
+  public error = "";
   public loginForm = new FormGroup({
     email: new FormControl("", [Validators.required, Validators.email]),
     password: new FormControl("", Validators.required)
   });
 
-  constructor(private readonly authService: AuthService, private readonly tokenStorageService: TokenStorageService) {
+  constructor(private readonly authService: AuthService) {
   }
 
   ngOnInit(): void {
   }
 
-  onSubmit() {
+  async onSubmit() {
     if (!this.loginForm.valid) {
-      console.log("Некорректные данные!");
+      this.error = "Некорректные данные!";
       return;
     }
     const data = this.loginForm.value as ILogin;
-    this.authService.login(data).subscribe((result) => this.tokenStorageService.setAccessTokenName(result.token));
+    const response = await this.authService.login(data);
+    if (response instanceof Message) {
+      this.error = response.message;
+    }
   }
 }

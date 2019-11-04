@@ -15,6 +15,8 @@ import { CommonModule } from "@angular/common";
 import { NewsCreateComponent } from "./components/news/create/news-create.component";
 import { ProfileComponent } from "./components/profile/profile.component";
 import { TokenStorageService } from "./services/storage/token-storage.service";
+import { AuthGuard } from "./guards/auth.guard";
+import { AuthService } from "./services/auth/auth.service";
 
 @NgModule({
   declarations: [
@@ -32,10 +34,12 @@ import { TokenStorageService } from "./services/storage/token-storage.service";
     NgbModule,
     CommonModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [
     TokenStorageService,
+    AuthGuard,
+    AuthService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthenticationInterceptor,

@@ -9,10 +9,27 @@
       </a>
     </div>
 
-    <div *ngIf="router.url == '/'" class="navbar-item">
-      <div class="custom-control custom-checkbox">
-        <input type="checkbox" class="custom-control-input" id="customControlInline">
-        <label class="custom-control-label" for="customControlInline">Только мои новости</label>
+    <div class="form-inline">
+      <form class="form-inline" *ngIf="!tokenStorageService.getAccessTokenName()">
+        <a class="navbar-item nav-link" href="/login">Вход</a>
+        <a class="navbar-item nav-link" href="/registration">Регистрация</a>
+      </form>
+      <div class="btn-group" *ngIf="tokenStorageService.getAccessTokenName()">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Действия
+        </button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="/profile">Профиль</a>
+          <a class="dropdown-item" href="/news/create">Создать новость</a>
+          <button class="dropdown-item" (click)="authService.logout()">Выход</button>
+          <div *ngIf="router.url == '/'" class="dropdown-item">
+            <div class="dropdown-divider"></div>
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" id="customControlInline">
+              <label class="custom-control-label" for="customControlInline">Только мои новости</label>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 

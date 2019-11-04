@@ -4,19 +4,37 @@ import { ILogin } from "./interfaces/ILogin";
 import { IToken } from "./interfaces/IToken";
 import { Observable } from "rxjs";
 import { IRegistration } from "./interfaces/IRegistration";
-import { IMessage } from "../../shared/interfaces/IMessage";
+import { Message } from "../../shared/interfaces/Message";
+import { Router } from "@angular/router";
+import { TokenStorageService } from "../storage/token-storage.service";
 
 @Injectable()
 export class AuthService {
   private controllerName = "auth";
-  constructor(private httpClient: HttpClient) {
+  constructor(
+    private readonly httpClient: HttpClient,
+    private readonly router: Router,
+    private readonly tokenStorageService: TokenStorageService
+  ) {
   }
 
-  public login(data: ILogin): Observable<IToken> {
-    return this.httpClient.post<IToken>(`${this.controllerName}/login`, data);
+  public async login(data: ILogin): Promise<ILogin | Message> {
+    const response = await this.httpClient.post<IToken>(`${this.controllerName}/login`, data, {observe: "response"}).toPromise()
+      .catch((res) => res.error);
+    if (!response.body || response.status !== 200) {
+      return new Message({message: response.Message});
+    }
+    this.tokenStorageService.setAccessTokenName(response.body.token);
+    await this.router.navigate([""]);
+    return response.body.token;
   }
 
-  public registration(data: IRegistration): Observable<IMessage> {
-    return this.httpClient.post<IMessage>(`${this.controllerName}/registration`, data);
+  public registration(data: IRegistration): Observable<Message> {
+    return this.httpClient.post<Message>(`${this.controllerName}/registration`, data);
+  }
+
+  public logout(): void {
+    this.tokenStorageService.deleteAccessToken();
+    this.router.navigate(["login"]);
   }
 }
