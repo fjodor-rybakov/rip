@@ -44,7 +44,11 @@ namespace backend.services
 
             var newUserEntity = new UserEntity()
             {
-                Email = createUserDto.Email, Nickname = createUserDto.Nickname, Password = createUserDto.Password, RoleId = 1
+                Email = createUserDto.Email,
+                Nickname = createUserDto.Nickname,
+                Password = createUserDto.Password,
+                RoleId = 1,
+                Avatar = "default-avatar.png"
             };
             _db.Users.Add(newUserEntity);
             _db.SaveChanges();

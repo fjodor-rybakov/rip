@@ -26,18 +26,21 @@ namespace backend.controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = AcceptRole.User + ", " + AcceptRole.Administrator)]
         public ActionResult<IdDto> CreateNews([FromBody] CreateNewsDto createUserDto)
         {
             return new OkObjectResult(new { Id = _newsService.CreateNews(createUserDto) });
         }
 
         [HttpPut(":id")]
+        [Authorize(Roles = AcceptRole.User + ", " + AcceptRole.Administrator)]
         public ActionResult<IdDto> UpdateNews(int id, [FromBody] UpdatedNewsDto updatedNewsDto)
         {
             return new OkObjectResult(new { Id = _newsService.UpdateNews(id, updatedNewsDto) });
         }
         
         [HttpDelete(":id")]
+        [Authorize(Roles = AcceptRole.User + ", " + AcceptRole.Administrator)]
         public ActionResult DeleteNews(int id)
         {
             _newsService.DeleteNews(id);

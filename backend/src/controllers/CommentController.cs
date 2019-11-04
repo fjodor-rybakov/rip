@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using backend.helper;
+using backend.models.assets;
 using backend.models.dto.comment;
 using backend.services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.controllers
@@ -24,18 +26,21 @@ namespace backend.controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = AcceptRole.User + ", " + AcceptRole.Administrator)]
         public ActionResult<IdDto> CreateComment([FromBody] CreateCommentDto createCommentDto)
         {
             return new OkObjectResult(new { Id = _commentService.CreateComment(createCommentDto) });
         }
 
         [HttpPut(":id")]
+        [Authorize(Roles = AcceptRole.User + ", " + AcceptRole.Administrator)]
         public ActionResult<IdDto> UpdateComment(int id, [FromBody] UpdateCommentDto updateCommentDto)
         {
             return new OkObjectResult(new { Id = _commentService.UpdateComment(id, updateCommentDto) });
         }
         
         [HttpDelete(":id")]
+        [Authorize(Roles = AcceptRole.User + ", " + AcceptRole.Administrator)]
         public ActionResult DeleteComment(int id)
         {
             _commentService.DeleteComment(id);

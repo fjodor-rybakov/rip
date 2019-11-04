@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using backend.helper.enums;
+using backend.models.assets;
 using backend.models.dto.media;
 using backend.services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.controllers
@@ -18,12 +20,14 @@ namespace backend.controllers
         }
 
         [HttpPut("upload")]
+        [Authorize(Roles = AcceptRole.User + ", " + AcceptRole.Administrator)]
         public ActionResult<List<CreatedMediaDto>> UploadMedia([FromForm]TypeIdUpload typeIdUpload)
         {
             return new OkObjectResult(_mediaService.UploadMedia(typeIdUpload));
         }
 
         [HttpDelete("{fileName}/{eTypeUpload}")]
+        [Authorize(Roles = AcceptRole.User + ", " + AcceptRole.Administrator)]
         public ActionResult DeleteFile(string fileName, ETypeUpload eTypeUpload)
         {
             _mediaService.DeleteFile(fileName, eTypeUpload);
