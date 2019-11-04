@@ -6,6 +6,7 @@ using backend.core.connectors;
 using backend.helper;
 using backend.models.dto.news;
 using backend.models.entities;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace backend.services
 {
@@ -20,20 +21,27 @@ namespace backend.services
             _db = db;
         }
         
-        public List<NewsListDto> GetNewsList()
+        public List<NewsListDto> GetNewsList(int userId, bool? onlyMy)
         {
-            return (
-                from newsEntity in _db.News
-                join userEntity in _db.Users on newsEntity.UserId equals userEntity.Id 
+            var query = from newsEntity in _db.News
+                join userEntity in _db.Users on newsEntity.UserId equals userEntity.Id
                 select new NewsListDto
                 {
+                    UserId = newsEntity.UserId,
                     Title = newsEntity.Title,
                     Description = newsEntity.Description,
                     PathToImages = newsEntity.PathToImages,
                     CreatedAt = newsEntity.CreatedAt,
                     Nickname = userEntity.Nickname,
                     Avatar = userEntity.Avatar,
-                }).ToList();
+                };
+
+            if (onlyMy != null && onlyMy == true)
+            {
+                query = query.Where(entity => entity.UserId == userId);
+            }
+            
+            return query.ToList();
         }
 
         public int CreateNews(CreateNewsDto createUserDto)

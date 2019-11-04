@@ -1,4 +1,8 @@
 <div class="outer container align-self-center news" *ngIf="newsService">
+  <div class="custom-control custom-checkbox">
+    <input type="checkbox" class="custom-control-input" id="customControlInline" (click)="filterNews()">
+    <label class="custom-control-label" for="customControlInline">Только мои новости</label>
+  </div>
   <h2 class="main-title">Новости</h2>
   <div *ngFor='let news of newsListData' class="news-post">
     <div>

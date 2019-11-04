@@ -11,8 +11,8 @@ export class NewsService {
   constructor(private httpClient: HttpClient) {
   }
 
-  public getNewsList(): Observable<INews[]> {
-    return this.httpClient.get<INews[]>("news");
+  public getNewsList(isOnlyMy: boolean): Observable<INews[]> {
+    return this.httpClient.get<INews[]>("news", {params: {onlyMy: `${isOnlyMy}`}});
   }
 
   public createNews(body: ICUNews): Observable<IId> {
