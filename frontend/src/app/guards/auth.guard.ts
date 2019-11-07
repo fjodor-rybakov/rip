@@ -1,6 +1,5 @@
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from "@angular/router";
 import { Injectable } from "@angular/core";
-import { ETokenType } from "../shared/enums/ETokenType";
 import { TokenStorageService } from "../services/storage/token-storage.service";
 
 @Injectable()

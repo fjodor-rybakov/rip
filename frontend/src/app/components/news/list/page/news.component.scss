@@ -10,10 +10,15 @@
     font-weight: bold;
   }
 
-  #user-avatar {
+  #user-avatar, #user-avatar-comment {
     width: 50px;
     height: 50px;
     margin-right: 20px;
+  }
+
+  #user-avatar-comment {
+    margin-top: 20px;
+    margin-bottom: 20px;
   }
 
   .news-info {
@@ -31,4 +36,5 @@
     padding-top: 50px;
     border-bottom: darkgray 1px solid;
   }
+
 }

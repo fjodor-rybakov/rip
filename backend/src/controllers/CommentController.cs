@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using backend.helper;
 using backend.models.assets;
 using backend.models.dto.comment;
@@ -19,10 +20,10 @@ namespace backend.controllers
             _commentService = commentService;
         }
         
-        [HttpGet(":newsId")]
-        public ActionResult<List<NewsCommentListDto>> GetCommentList(int newsId)
+        [HttpGet]
+        public ActionResult<List<NewsCommentListDto>> GetCommentList()
         {
-            return new OkObjectResult(_commentService.GetCommentList(newsId));
+            return new OkObjectResult(_commentService.GetCommentList());
         }
 
         [HttpPost]
@@ -32,14 +33,14 @@ namespace backend.controllers
             return new OkObjectResult(new { Id = _commentService.CreateComment(createCommentDto) });
         }
 
-        [HttpPut(":id")]
+        [HttpPut("{id}")]
         [Authorize(Roles = AcceptRole.User + ", " + AcceptRole.Administrator)]
         public ActionResult<IdDto> UpdateComment(int id, [FromBody] UpdateCommentDto updateCommentDto)
         {
             return new OkObjectResult(new { Id = _commentService.UpdateComment(id, updateCommentDto) });
         }
         
-        [HttpDelete(":id")]
+        [HttpDelete("{id}")]
         [Authorize(Roles = AcceptRole.User + ", " + AcceptRole.Administrator)]
         public ActionResult DeleteComment(int id)
         {

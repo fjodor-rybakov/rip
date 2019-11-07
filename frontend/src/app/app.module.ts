@@ -17,6 +17,8 @@ import { ProfileComponent } from "./components/profile/profile.component";
 import { TokenStorageService } from "./services/storage/token-storage.service";
 import { AuthGuard } from "./guards/auth.guard";
 import { AuthService } from "./services/auth/auth.service";
+import { CommentService } from "./services/comment/comment.service";
+import { ProfileService } from "./services/profile/profile.service";
 
 @NgModule({
   declarations: [
@@ -40,6 +42,8 @@ import { AuthService } from "./services/auth/auth.service";
     TokenStorageService,
     AuthGuard,
     AuthService,
+    CommentService,
+    ProfileService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthenticationInterceptor,

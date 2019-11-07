@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using backend.core.connectors;
 using backend.helper;
@@ -18,18 +19,21 @@ namespace backend.services
             _db = db;
         }
         
-        public List<NewsCommentListDto> GetCommentList(int newsId)
+        public List<NewsCommentListDto> GetCommentList()
         {
             return (
-                from commentEntity in _db.Comment.Where(x => x.NewsId == newsId)
+                from commentEntity in _db.Comment
                 from userEntity in _db.Users.Where(x => commentEntity.UserId == x.Id).DefaultIfEmpty()
-                select new
+                select new NewsCommentListDto
                 {
-                    commentEntity.Value,
-                    commentEntity.CreatedAt,
-                    userEntity.Avatar,
-                    userEntity.Nickname,
-                }).Select(entity => new NewsCommentListDto()).ToList();
+                    Value = commentEntity.Value,
+                    CreatedAt = commentEntity.CreatedAt,
+                    Avatar = userEntity.Avatar,
+                    Nickname = userEntity.Nickname,
+                    UserId = userEntity.Id,
+                    NewsId = commentEntity.NewsId,
+                    Id = commentEntity.Id
+                }).ToList();
         }
 
         public int CreateComment(CreateCommentDto createCommentDto)
@@ -61,6 +65,7 @@ namespace backend.services
         {
             var comment = GetCommentEntity(id);
             _db.Remove(comment);
+            _db.SaveChanges();
         }
 
         private CommentEntity GetCommentEntity(int id)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using backend.models.assets;
 using backend.models.entities;
 using Microsoft.EntityFrameworkCore;
@@ -36,6 +37,9 @@ namespace backend.core.connectors
             modelBuilder.Entity<RoleEntity>().Property(b => b.UpdatedAt).HasDefaultValueSql("NOW()");
             modelBuilder.Entity<NewsEntity>().Property(b => b.CreatedAt).HasDefaultValueSql("NOW()");
             modelBuilder.Entity<NewsEntity>().Property(b => b.UpdatedAt).HasDefaultValueSql("NOW()");
+            
+            modelBuilder.Entity<CommentEntity>().Property(b => b.CreatedAt).HasDefaultValueSql("NOW()");
+            modelBuilder.Entity<CommentEntity>().Property(b => b.UpdatedAt).HasDefaultValueSql("NOW()");
             
             base.OnModelCreating(modelBuilder);
             Console.WriteLine("Models was updated!");

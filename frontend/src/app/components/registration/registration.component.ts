@@ -9,6 +9,7 @@ import { IRegistration } from "../../services/auth/interfaces/IRegistration";
   providers: [AuthService]
 })
 export class RegistrationComponent implements OnInit {
+  public error = "";
   public registrationForm = new FormGroup({
     email: new FormControl("", [Validators.required, Validators.email]),
     nickname: new FormControl("", Validators.required),
@@ -22,9 +23,8 @@ export class RegistrationComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.registrationForm);
     if (!this.registrationForm.valid) {
-      console.log("Некорректные данные!");
+      this.error = "Некорректные данные!";
       return;
     }
     const data = this.registrationForm.value as IRegistration;

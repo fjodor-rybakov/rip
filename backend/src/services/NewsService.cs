@@ -27,6 +27,7 @@ namespace backend.services
                 join userEntity in _db.Users on newsEntity.UserId equals userEntity.Id
                 select new NewsListDto
                 {
+                    Id = newsEntity.Id,
                     UserId = newsEntity.UserId,
                     Title = newsEntity.Title,
                     Description = newsEntity.Description,
@@ -80,6 +81,7 @@ namespace backend.services
                 File.Delete(path + item);
             }
             _db.Remove(news);
+            _db.SaveChanges();
         }
 
         private NewsEntity GetNewsEntity(int id)

@@ -6,6 +6,9 @@
   <h2 class="main-title">Новости</h2>
   <div *ngFor='let news of newsListData' class="news-post">
     <div>
+      <button type="button" class="close" aria-label="Close" *ngIf="checkMy(news.userId)" (click)="removeNews(news.id)">
+        <span aria-hidden="true">&times;</span>
+      </button>
       <div>
         <img *ngIf="news.avatar" src="http://localhost:5002/user-avatars/{{news.avatar}}" class="rounded-circle" alt="user-avatar" id="user-avatar">
         <label for="user-avatar">{{news.nickname}}</label>
@@ -21,6 +24,29 @@
           {{news.description}}
         </p>
       </div>
+    </div>
+    <div class="low-line"></div>
+    <div *ngFor='let comment of filterCommentListNyMews(news.id)' class="container">
+      <button type="button" class="close" aria-label="Close" *ngIf="checkMy(comment.userId)" (click)="removeComment(comment.id)">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <div>
+        <img src="http://localhost:5002/user-avatars/{{comment.avatar}}" class="rounded-circle" alt="user-avatar" id="user-avatar-comment">
+        <label for="user-avatar-comment">{{comment.nickname}}</label>
+        <pre class="time">{{formattingDate(comment.createdAt)}}</pre>
+      </div>
+      <div class="container">
+        <p>{{comment.value}}</p>
+      </div>
+    </div>
+    <form [formGroup]="commentForm" class="input-group mb-3">
+      <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2" formControlName="value">
+      <div class="input-group-append">
+        <button class="input-group-text" id="basic-addon2" (click)="createComment(news.id)">Отправить</button>
+      </div>
+    </form>
+    <div *ngIf="error" class="alert alert-danger error">
+      {{error}}
     </div>
     <div class="low-line"></div>
   </div>
