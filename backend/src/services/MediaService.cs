@@ -90,7 +90,10 @@ namespace backend.services
             }
 
             var newName = $"{Guid.NewGuid().ToString()}.{file.FileName.Split('.').Last()}";
-            file.CopyTo(new FileStream(path + newName, FileMode.Create));
+            using (var fileStream = new FileStream(path + newName, FileMode.Create))
+            {
+                file.CopyTo(fileStream);
+            }
             return newName;
         }
     }

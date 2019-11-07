@@ -40,14 +40,14 @@ namespace backend.controllers
             return new OkObjectResult(new { Id = _newsService.CreateNews(createUserDto) });
         }
 
-        [HttpPut(":id")]
+        [HttpPut("{id}")]
         [Authorize(Roles = AcceptRole.User + ", " + AcceptRole.Administrator)]
         public ActionResult<IdDto> UpdateNews(int id, [FromBody] UpdatedNewsDto updatedNewsDto)
         {
             return new OkObjectResult(new { Id = _newsService.UpdateNews(id, updatedNewsDto) });
         }
         
-        [HttpDelete(":id")]
+        [HttpDelete("{id}")]
         [Authorize(Roles = AcceptRole.User + ", " + AcceptRole.Administrator)]
         public ActionResult DeleteNews(int id)
         {
