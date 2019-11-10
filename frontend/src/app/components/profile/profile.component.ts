@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ProfileService } from "../../services/profile/profile.service";
 import { IProfile } from "../../services/profile/interfaces/IProfile";
+import { SharedService } from "../../shared/services/shared.service";
 
 @Component({
   templateUrl: "./page/profile.component.html",
@@ -10,7 +11,7 @@ import { IProfile } from "../../services/profile/interfaces/IProfile";
 export class ProfileComponent implements OnInit {
   public userProfile?: IProfile;
 
-  constructor(private readonly profileService: ProfileService) {
+  constructor(private readonly profileService: ProfileService, private readonly sharedService: SharedService) {
   }
 
   public async ngOnInit() {

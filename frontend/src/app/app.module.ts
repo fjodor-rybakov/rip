@@ -19,6 +19,7 @@ import { AuthGuard } from "./guards/auth.guard";
 import { AuthService } from "./services/auth/auth.service";
 import { CommentService } from "./services/comment/comment.service";
 import { ProfileService } from "./services/profile/profile.service";
+import { SharedService } from "./shared/services/shared.service";
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { ProfileService } from "./services/profile/profile.service";
     AuthService,
     CommentService,
     ProfileService,
+    SharedService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthenticationInterceptor,
