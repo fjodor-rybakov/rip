@@ -26,10 +26,17 @@ namespace backend.controllers
         [HttpGet]
         public ActionResult<List<NewsListDto>> GetNewsList([FromQuery(Name = "onlyMy")] bool? onlyMy)
         {
-            Console.WriteLine(onlyMy);
-            HttpContext.Request.Headers.TryGetValue("Authorization", out var token);
-            var tokenData = _authService.GetTokenInfo(token.ToString().Split(" ").Last());
-            var userId = tokenData.UserId;
+            int? userId = null;
+            try
+            {
+                HttpContext.Request.Headers.TryGetValue("Authorization", out var token);
+                var tokenData = _authService.GetTokenInfo(token.ToString().Split(" ").Last());
+                userId = tokenData.UserId;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
             return new OkObjectResult(_newsService.GetNewsList(userId, onlyMy));
         }
 

@@ -21,7 +21,7 @@ namespace backend.services
             _db = db;
         }
         
-        public List<NewsListDto> GetNewsList(int userId, bool? onlyMy)
+        public List<NewsListDto> GetNewsList(int? userId, bool? onlyMy)
         {
             var query = from newsEntity in _db.News
                 join userEntity in _db.Users on newsEntity.UserId equals userEntity.Id
@@ -37,7 +37,7 @@ namespace backend.services
                     Avatar = userEntity.Avatar,
                 };
 
-            if (onlyMy != null && onlyMy == true)
+            if (onlyMy != null && onlyMy == true && userId != null)
             {
                 query = query.Where(entity => entity.UserId == userId);
             }

@@ -6,8 +6,10 @@ import { CommentService } from "../../../services/comment/comment.service";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { IBaseComment } from "../../../services/comment/interfaces/IBaseComment";
 import { ProfileService } from "../../../services/profile/profile.service";
-import { findIndex, remove } from "lodash";
+import { remove } from "lodash";
 import { IProfile } from "../../../services/profile/interfaces/IProfile";
+import { SharedService } from "../../../shared/services/shared.service";
+import { TokenStorageService } from "../../../services/storage/token-storage.service";
 
 @Component({
   templateUrl: "./page/news.component.html",
@@ -21,20 +23,24 @@ export class NewsComponent implements OnInit {
   public commentForm = new FormGroup({
     value: new FormControl("", Validators.required),
   });
-  private profile!: IProfile;
+  private profile?: IProfile;
   public error = "";
 
   constructor(
     private readonly newsService: NewsService,
     private readonly commentService: CommentService,
-    private readonly profileService: ProfileService
+    private readonly profileService: ProfileService,
+    private readonly sharedService: SharedService,
+    private readonly tokenStorageService: TokenStorageService,
   ) {
   }
 
   async ngOnInit(): Promise<void> {
     this.newsListData = await this.newsService.getNewsList(this.isOnlyMy).toPromise();
     this.commentList = await this.commentService.getCommentListByNews().toPromise();
-    this.profile = await this.profileService.getProfile().toPromise();
+    if (this.tokenStorageService.getAccessTokenName()) {
+      this.profile = await this.profileService.getProfile().toPromise();
+    }
   }
 
   public async filterNews(): Promise<void> {
@@ -52,6 +58,9 @@ export class NewsComponent implements OnInit {
   }
 
   public async createComment(newsId: number): Promise<void> {
+    if (!this.profile) {
+      return;
+    }
     const data: IBaseComment = {
       newsId,
       userId: this.profile.id,
@@ -75,7 +84,7 @@ export class NewsComponent implements OnInit {
   }
 
   public checkMy(userId: number): boolean {
-    return this.profile.id === userId;
+    return !!this.profile && this.profile.id === userId;
   }
 
   public async removeComment(commentId: number): Promise<void> {

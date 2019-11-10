@@ -1,5 +1,5 @@
 <div class="outer container align-self-center news" *ngIf="newsService">
-  <div class="custom-control custom-checkbox">
+  <div *ngIf="profile" class="custom-control custom-checkbox">
     <input type="checkbox" class="custom-control-input" id="customControlInline" (click)="filterNews()">
     <label class="custom-control-label" for="customControlInline">Только мои новости</label>
   </div>
@@ -10,14 +10,14 @@
         <span aria-hidden="true">&times;</span>
       </button>
       <div>
-        <img *ngIf="news.avatar" src="http://localhost:5002/user-avatars/{{news.avatar}}" class="rounded-circle" alt="user-avatar" id="user-avatar">
+        <img *ngIf="news.avatar" src="{{sharedService.staticServerAddress}}/user-avatars/{{news.avatar}}" class="rounded-circle" alt="user-avatar" id="user-avatar">
         <label for="user-avatar">{{news.nickname}}</label>
       </div>
     </div>
     <div class="container news-info">
       <h4>{{news.title}}</h4>
       <div *ngFor='let imagePath of news.pathToImages' class="row">
-        <img class="col" src="http://localhost:5002/photo-news/{{imagePath}}" alt="news-photo">
+        <img class="col" src="{{sharedService.staticServerAddress}}/photo-news/{{imagePath}}" alt="news-photo">
       </div>
       <div>
         <p class="news-description">
@@ -31,7 +31,7 @@
         <span aria-hidden="true">&times;</span>
       </button>
       <div>
-        <img src="http://localhost:5002/user-avatars/{{comment.avatar}}" class="rounded-circle" alt="user-avatar" id="user-avatar-comment">
+        <img src="{{sharedService.staticServerAddress}}/user-avatars/{{comment.avatar}}" class="rounded-circle" alt="user-avatar" id="user-avatar-comment">
         <label for="user-avatar-comment">{{comment.nickname}}</label>
         <pre class="time">{{formattingDate(comment.createdAt)}}</pre>
       </div>
@@ -39,7 +39,7 @@
         <p>{{comment.value}}</p>
       </div>
     </div>
-    <form [formGroup]="commentForm" class="input-group mb-3">
+    <form *ngIf="profile" [formGroup]="commentForm" class="input-group mb-3">
       <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2" formControlName="value">
       <div class="input-group-append">
         <button class="input-group-text" id="basic-addon2" (click)="createComment(news.id)">Отправить</button>

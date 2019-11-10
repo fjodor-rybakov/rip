@@ -11,4 +11,8 @@ export class ProfileService {
   public getProfile(): Observable<IProfile> {
     return this.httpClient.get<IProfile>("profile");
   }
+
+  public getProfileByUserId(userId: number): Observable<IProfile> {
+    return this.httpClient.get<IProfile>(`profile/${userId}`);
+  }
 }

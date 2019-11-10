@@ -28,5 +28,11 @@ namespace backend.controllers
             var tokenData = _authService.GetTokenInfo(token.ToString().Split(" ").Last());
             return new OkObjectResult(_profileService.GetProfile(tokenData.UserId));
         }
+        
+        [HttpGet("{id}")]
+        public ActionResult<UserDto> GetProfileByUserId([FromQuery] int userId)
+        {
+            return new OkObjectResult(_profileService.GetProfile(userId));
+        }
     }
 }
